@@ -24,7 +24,7 @@ async def test_s3(app: Application, s3_integrator: Application, ops_test: OpsTes
     """
     # Application actually does have units
     return_code, stdout, _ = await ops_test.juju(
-        "ssh", "--container", app.name, app.units[0].name, "pebble", "plan"  # type: ignore
+        "ssh", "--container", "indico", app.units[0].name, "pebble", "plan"  # type: ignore
     )
     assert return_code == 0
     plan = yaml.safe_load(stdout)
