@@ -213,7 +213,7 @@ class TestCore(TestBase):  # pylint: disable=too-many-public-methods
             ),
             updated_plan_env["SECRET_KEY"],
         )
-        self.assertEqual("indico.local", updated_plan_env["SERVICE_HOSTNAME"])
+        self.assertEqual("javi-indico.local", updated_plan_env["SERVICE_HOSTNAME"])
         self.assertIsNone(updated_plan_env["SERVICE_PORT"])
         self.assertEqual("redis://cache-host:1011", updated_plan_env["REDIS_CACHE_URL"])
         self.assertFalse(updated_plan_env["ENABLE_ROOMBOOKING"])
@@ -265,7 +265,7 @@ class TestCore(TestBase):  # pylint: disable=too-many-public-methods
         secret = self.harness.model.get_secret(id=secret_id)
         secret_value = secret.get_content().get("secret-key")
         self.assertEqual(secret_value, updated_plan_env["SECRET_KEY"])
-        self.assertEqual("indico.local", updated_plan_env["SERVICE_HOSTNAME"])
+        self.assertEqual("javi-indico.local", updated_plan_env["SERVICE_HOSTNAME"])
         self.assertIsNone(updated_plan_env["SERVICE_PORT"])
         self.assertEqual("redis://cache-host:1011", updated_plan_env["REDIS_CACHE_URL"])
         self.assertFalse(updated_plan_env["ENABLE_ROOMBOOKING"])
@@ -645,16 +645,16 @@ class TestCore(TestBase):  # pylint: disable=too-many-public-methods
         mock_juju_env.return_value = MagicMock(has_secrets=True)
         self.harness.set_can_connect(self.harness.model.unit.containers["indico"], True)
         rel_id = self.harness.add_relation(
-            "indico-peers", self.harness.charm.app.name, app_data={"celery-unit": "indico/1"}
+            "indico-peers", self.harness.charm.app.name, app_data={"celery-unit": "javi-indico/1"}
         )
-        self.harness.add_relation_unit(rel_id, "indico/0")
-        self.harness.add_relation_unit(rel_id, "indico/1")
+        self.harness.add_relation_unit(rel_id, "javi-indico/0")
+        self.harness.add_relation_unit(rel_id, "javi-indico/1")
         self.harness.set_leader(True)
-        self.harness.remove_relation_unit(rel_id, "indico/1")
+        self.harness.remove_relation_unit(rel_id, "javi-indico/1")
         celery_unit = self.harness.get_relation_data(rel_id, self.harness.charm.app.name).get(
             "celery-unit"
         )
-        self.assertEqual(celery_unit, "indico/0")
+        self.assertEqual(celery_unit, "javi-indico/0")
 
     @patch.object(ops.JujuVersion, "from_environ")
     def test_on_peer_relation_departed_celery_leder_unit_relation_data_changed(
@@ -668,12 +668,12 @@ class TestCore(TestBase):  # pylint: disable=too-many-public-methods
         mock_juju_env.return_value = MagicMock(has_secrets=True)
         self.harness.set_can_connect(self.harness.model.unit.containers["indico"], True)
         rel_id = self.harness.add_relation(
-            "indico-peers", self.harness.charm.app.name, app_data={"celery-unit": "indico/0"}
+            "indico-peers", self.harness.charm.app.name, app_data={"celery-unit": "javi-indico/0"}
         )
-        self.harness.add_relation_unit(rel_id, "indico/0")
-        self.harness.add_relation_unit(rel_id, "indico/1")
+        self.harness.add_relation_unit(rel_id, "javi-indico/0")
+        self.harness.add_relation_unit(rel_id, "javi-indico/1")
         self.harness.set_leader(True)
-        self.harness.remove_relation_unit(rel_id, "indico/0")
+        self.harness.remove_relation_unit(rel_id, "javi-indico/0")
         celery_unit = self.harness.get_relation_data(rel_id, self.harness.charm.app.name).get(
             "celery-unit"
         )
