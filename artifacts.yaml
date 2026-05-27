@@ -1,0 +1,23 @@
+version: 1
+rocks:
+- name: indico
+  rockcraft-yaml: indico_rock/rockcraft.yaml
+  platforms:
+  - arch: amd64
+- name: indico-nginx
+  rockcraft-yaml: nginx_rock/rockcraft.yaml
+  platforms:
+  - arch: amd64
+charms:
+- name: javi-indico
+  charmcraft-yaml: charmcraft.yaml
+  resources:
+    indico-image:
+      type: oci-image
+      rock: indico
+    indico-nginx-image:
+      type: oci-image
+      rock: indico-nginx
+  platforms:
+  - arch: amd64
+snaps: []

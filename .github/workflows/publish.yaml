@@ -1,0 +1,17 @@
+name: Publish to edge
+
+on:
+  push:
+    branches:
+      - main
+      - track/*
+
+jobs:
+  publish:
+    uses: canonical/charm-ci/.github/workflows/publish-artifacts.yml@main
+    permissions:
+      contents: read
+      actions: read
+    secrets: inherit
+    with:
+      channel: latest/edge

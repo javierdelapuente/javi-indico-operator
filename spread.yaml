@@ -1,0 +1,31 @@
+project: javi-indico-operator
+path: /root/proj
+kill-timeout: 60m
+warn-timeout: 1m
+backends:
+  integration-test:
+    type: integration-test
+    systems:
+    - ubuntu-24.04
+environment:
+  CONCIERGE: '$(HOST: echo "${CONCIERGE:-concierge.yaml}")'
+  OPCLI_GIT_REF: '$(HOST: echo "${OPCLI_GIT_REF:-main}")'
+  GITHUB_TOKEN: '$(HOST: echo "${GITHUB_TOKEN:-}")'
+  GITHUB_RUN_ID: '$(HOST: echo "${GITHUB_RUN_ID:-}")'
+  GITHUB_REPOSITORY: '$(HOST: echo "${GITHUB_REPOSITORY:-}")'
+exclude:
+- .git
+- .tox
+- .venv
+- .*_cache
+suites:
+  tests/integration/:
+    summary: integration tests
+    backends:
+    - integration-test
+    environment:
+      MODULE/test_actions: test_actions
+      MODULE/test_charm: test_charm
+      MODULE/test_loki: test_loki
+      MODULE/test_s3: test_s3
+      MODULE/test_saml: test_saml
